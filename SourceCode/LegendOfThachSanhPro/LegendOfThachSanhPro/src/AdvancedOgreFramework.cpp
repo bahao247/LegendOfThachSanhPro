@@ -35,6 +35,8 @@ OgreFramework::~OgreFramework()
     if(m_pTrayMgr)      delete m_pTrayMgr;
     if(m_pInputMgr)		OIS::InputManager::destroyInputSystem(m_pInputMgr);
     if(m_pRoot)			delete m_pRoot;
+	if(mpSound)mpSound->deleteSound();
+	delete mpSound;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -120,6 +122,9 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
     m_pTimer->reset();
 
     m_pRenderWnd->setActive(true);
+	mpSound = new SoundManager();
+	mpSound->initSound();
+	mpSound->playSound("../../media/sound/XinChaoVietNam_Jmi.flac", Vector3(0,0,0), true);
 
     return true;
 }

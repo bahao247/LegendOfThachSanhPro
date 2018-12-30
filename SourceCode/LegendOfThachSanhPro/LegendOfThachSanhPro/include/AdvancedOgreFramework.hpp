@@ -23,6 +23,7 @@
 #include <OISMouse.h>
 
 #include <SdkTrays.h>
+#include "SoundManager.h"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -54,6 +55,7 @@ public:
 
     Ogre::OverlaySystem*        m_pOverlaySystem;
     OgreBites::SdkTrayManager*	m_pTrayMgr;
+	SoundManager*				mpSound;
 
 private:
 	OgreFramework(const OgreFramework&);

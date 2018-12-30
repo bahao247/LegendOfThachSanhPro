@@ -62,7 +62,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -70,8 +70,8 @@
       <ProgramDatabaseFile>$(OutDir)/LegendOfThachSanhPro.pdb</ProgramDatabaseFile>
       <OutputFile>sdk\bin\$(Configuration)\$(ProjectName).exe</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>sdk\lib\debug;sdk\boost\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>sdk\lib\debug;sdk\boost\lib;sdk\dependencies\irrKlang-1.5.0\lib\Win32-visualStudio;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
@@ -131,6 +131,7 @@
     <ClInclude Include="include\MenuState.hpp" />
     <ClInclude Include="include\PauseState.hpp" />
     <ClInclude Include="include\rapidxml.hpp" />
+    <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +143,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\PauseState.cpp" />
+    <ClCompile Include="src\SoundManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
