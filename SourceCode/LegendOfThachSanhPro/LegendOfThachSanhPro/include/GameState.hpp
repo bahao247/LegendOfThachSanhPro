@@ -11,6 +11,7 @@
 
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
+#include "CollisionTools.h"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -71,6 +72,7 @@ private:
 	Ogre::Entity*				m_pCurrentEntity;
 	bool						m_bLMouseDown, m_bRMouseDown;
 	bool						m_bSettingsMode;
+    Collision::CollisionTools*  m_Collision;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

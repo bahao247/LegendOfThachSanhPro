@@ -5,6 +5,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 using namespace Ogre;
+using namespace Collision;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -76,6 +77,7 @@ void GameState::resume()
 
 void GameState::exit()
 {
+    if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
 
     m_pSceneMgr->destroyCamera(m_pCamera);
@@ -108,6 +110,9 @@ void GameState::createScene()
     m_pOgreHeadMatHigh = m_pOgreHeadMat->clone("OgreHeadMatHigh");
     m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
     m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+
+    m_Collision = new CollisionTools();
+    if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -328,6 +333,16 @@ void GameState::update(double timeSinceLastFrame)
 
     getInput();
     moveCamera();
+    SCheckCollisionAnswer ret = m_Collision->check_ray_collision(m_pCamera->getCameraToViewportRay(0,1));
+    // check if we found collision:
+    if (ret.collided) 
+    {
+        LogManager::getSingleton().logMessage("---- VA CHAM ----");
+    }
+    else
+    {
+        LogManager::getSingleton().logMessage("---- KHONG VA CHAM ----");
+    }
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

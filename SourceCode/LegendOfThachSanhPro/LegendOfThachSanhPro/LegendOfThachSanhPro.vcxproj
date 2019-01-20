@@ -62,7 +62,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>sdk\dependencies\moc-2.0.0;sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,8 +133,10 @@
     <ClInclude Include="include\rapidxml.hpp" />
     <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="res\Resource.h" />
+    <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp" />
     <ClCompile Include="src\AdvancedOgreFramework.cpp" />
     <ClCompile Include="src\AppStateManager.cpp" />
     <ClCompile Include="src\DemoApp.cpp" />
