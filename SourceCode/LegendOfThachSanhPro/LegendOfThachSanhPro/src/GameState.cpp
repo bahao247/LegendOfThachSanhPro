@@ -9,7 +9,11 @@ using namespace Collision;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-GameState::GameState()
+GameState::GameState():
+    m_pCameraAngle(0.0f),
+    mOrbitRadius(150.0f),
+    mOrbitIncrementRadians(Ogre::Math::PI/250),
+    mPlaneSize(200)
 {
     m_MoveSpeed			= 0.1f;
     m_RotateSpeed		= 0.3f;
@@ -29,7 +33,7 @@ void GameState::enter()
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering GameState...");
 
     m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
-    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+    //m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
     m_pSceneMgr->addRenderQueueListener(OgreFramework::getSingletonPtr()->m_pOverlaySystem);
 
@@ -37,8 +41,8 @@ void GameState::enter()
     m_pRSQ->setQueryMask(OGRE_HEAD_MASK);
 
     m_pCamera = m_pSceneMgr->createCamera("GameCamera");
-    m_pCamera->setPosition(Vector3(5, 60, 60));
-    m_pCamera->lookAt(Vector3(5, 20, 0));
+    m_pCamera->setPosition(Ogre::Vector3(mOrbitRadius*Ogre::Math::Cos(m_pCameraAngle),200,mOrbitRadius*Ogre::Math::Sin(m_pCameraAngle)));
+    m_pCamera->lookAt(Vector3(0, 0, 0));
     m_pCamera->setNearClipDistance(5);
 
     m_pCamera->setAspectRatio(Real(OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth()) /
@@ -77,7 +81,7 @@ void GameState::resume()
 
 void GameState::exit()
 {
-    if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
+    //if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
 
     m_pSceneMgr->destroyCamera(m_pCamera);
@@ -90,29 +94,85 @@ void GameState::exit()
 
 void GameState::createScene()
 {
-    m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+     //m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+ 
+     //DotSceneLoader* pDotSceneLoader = new DotSceneLoader();
+     /*pDotSceneLoader->parseDotScene("CubeScene.xml", "General", m_pSceneMgr, m_pSceneMgr->getRootSceneNode());
+     delete pDotSceneLoader;
+ 
+     m_pSceneMgr->getEntity("Cube01")->setQueryFlags(CUBE_MASK);
+     m_pSceneMgr->getEntity("Cube02")->setQueryFlags(CUBE_MASK);
+     m_pSceneMgr->getEntity("Cube03")->setQueryFlags(CUBE_MASK);
+ 
+     m_pOgreHeadEntity = m_pSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
+     m_pOgreHeadEntity->setQueryFlags(OGRE_HEAD_MASK);
+     m_pOgreHeadNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
+     m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
+     m_pOgreHeadNode->setPosition(Vector3(0, 0, -25));
+ 
+     m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
+     m_pOgreHeadMatHigh = m_pOgreHeadMat->clone("OgreHeadMatHigh");
+     m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
+     m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);*/
+// 
+//     m_Collision = new CollisionTools();
+//     if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
+    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(Ogre::TFO_ANISOTROPIC);
+    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(16);
 
-    DotSceneLoader* pDotSceneLoader = new DotSceneLoader();
-    pDotSceneLoader->parseDotScene("CubeScene.xml", "General", m_pSceneMgr, m_pSceneMgr->getRootSceneNode());
-    delete pDotSceneLoader;
+    mMech = new Mech("Mech", m_pSceneMgr, mPlaneSize);
+    mOpponent = new OpponentMech("OpponentMech", m_pSceneMgr, mPlaneSize);
 
-    m_pSceneMgr->getEntity("Cube01")->setQueryFlags(CUBE_MASK);
-    m_pSceneMgr->getEntity("Cube02")->setQueryFlags(CUBE_MASK);
-    m_pSceneMgr->getEntity("Cube03")->setQueryFlags(CUBE_MASK);
+    Ogre::Entity* sculptureEntity = m_pSceneMgr->createEntity("Sculpture", "Sculpture.mesh");	
+    Ogre::AxisAlignedBox sculptureBox = sculptureEntity->getBoundingBox();
+    mSculptureNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+    mSculptureNode->attachObject(sculptureEntity);
+    mSculptureNode->setScale(4.0f, 17.0f, 4.0f);
+    mSculptureNode->setPosition(0, -sculptureBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*17.0f, 0);
+    sculptureEntity->setCastShadows(true);
 
-    m_pOgreHeadEntity = m_pSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
-    m_pOgreHeadEntity->setQueryFlags(OGRE_HEAD_MASK);
-    m_pOgreHeadNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
-    m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
-    m_pOgreHeadNode->setPosition(Vector3(0, 0, -25));
+    // Set ambient light
+    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.0, 0.0, 0.0));
+    m_pSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+    addSpotlight("spotLight1", 250.0, 0);
+    addSpotlight("spotLight2", 0, -250.0);
+    addSpotlight("spotLight3", 0, 250.0);
+    addSpotlight("spotLight4", -250.0, 0);
 
-    m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
-    m_pOgreHeadMatHigh = m_pOgreHeadMat->clone("OgreHeadMatHigh");
-    m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
-    m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 
-    m_Collision = new CollisionTools();
-    if (m_Collision != nullptr)m_Collision->register_entity(m_pOgreHeadEntity);
+    Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        plane, mPlaneSize, mPlaneSize, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+
+    Ogre::Entity* entGround = m_pSceneMgr->createEntity("GroundEntity", "ground");
+    m_pSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+
+    entGround->setMaterialName("Examples/BumpyMetal");
+    entGround->setCastShadows(false);
+}
+
+void GameState::addSpotlight(const Ogre::String name, const Ogre::Real xPos, const Ogre::Real zPos) 
+{
+    Ogre::Light* spotLight = m_pSceneMgr->createLight(name);
+    spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
+    spotLight->setDiffuseColour(1.0, 1.0, 1.0);
+    spotLight->setSpecularColour(1.0, 1.0, 1.0);
+    spotLight->setDirection(0, -1, 0);
+    spotLight->setPosition(xPos, 250.0, zPos);
+    spotLight->setAttenuation(500.0f, 0.5f, 0.007f, 0.0f);
+    spotLight->setSpotlightRange(Ogre::Degree(180), Ogre::Degree(180));
+}
+
+void GameState::showResult(Ogre::String result)
+{
+    if (OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget("result")==0) {
+        Ogre::StringVector items2;
+        items2.push_back("Result");
+        mResultPanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_NONE, "result", 200, items2);
+        OgreFramework::getSingletonPtr()->m_pTrayMgr->moveWidgetToTray(mResultPanel, OgreBites::TL_CENTER, 0);
+        mResultPanel->setParamValue(0, result);
+        mResultPanel->show();
+    }
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -237,14 +297,14 @@ bool GameState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 
 void GameState::onLeftPressed(const OIS::MouseEvent &evt)
 {
-    if(m_pCurrentObject)
+    /*if(m_pCurrentObject)
     {
-        m_pCurrentObject->showBoundingBox(false);
-        m_pCurrentEntity->getSubEntity(1)->setMaterial(m_pOgreHeadMat);
+    m_pCurrentObject->showBoundingBox(false);
+    m_pCurrentEntity->getSubEntity(1)->setMaterial(m_pOgreHeadMat);
     }
 
     Ogre::Ray mouseRay = m_pCamera->getCameraToViewportRay(OgreFramework::getSingletonPtr()->m_pMouse->getMouseState().X.abs / float(evt.state.width),
-        OgreFramework::getSingletonPtr()->m_pMouse->getMouseState().Y.abs / float(evt.state.height));
+    OgreFramework::getSingletonPtr()->m_pMouse->getMouseState().Y.abs / float(evt.state.height));
     m_pRSQ->setRay(mouseRay);
     m_pRSQ->setSortByDistance(true);
 
@@ -253,17 +313,17 @@ void GameState::onLeftPressed(const OIS::MouseEvent &evt)
 
     for(itr = result.begin(); itr != result.end(); itr++)
     {
-        if(itr->movable)
-        {
-            OgreFramework::getSingletonPtr()->m_pLog->logMessage("MovableName: " + itr->movable->getName());
-            m_pCurrentObject = m_pSceneMgr->getEntity(itr->movable->getName())->getParentSceneNode();
-            OgreFramework::getSingletonPtr()->m_pLog->logMessage("ObjName " + m_pCurrentObject->getName());
-            m_pCurrentObject->showBoundingBox(true);
-            m_pCurrentEntity = m_pSceneMgr->getEntity(itr->movable->getName());
-            m_pCurrentEntity->getSubEntity(1)->setMaterial(m_pOgreHeadMatHigh);
-            break;
-        }
+    if(itr->movable)
+    {
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("MovableName: " + itr->movable->getName());
+    m_pCurrentObject = m_pSceneMgr->getEntity(itr->movable->getName())->getParentSceneNode();
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("ObjName " + m_pCurrentObject->getName());
+    m_pCurrentObject->showBoundingBox(true);
+    m_pCurrentEntity = m_pSceneMgr->getEntity(itr->movable->getName());
+    m_pCurrentEntity->getSubEntity(1)->setMaterial(m_pOgreHeadMatHigh);
+    break;
     }
+    }*/
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -292,6 +352,35 @@ void GameState::getInput()
 
         if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S))
             m_TranslateVector.z = m_MoveScale;
+    }
+    if (!OgreFramework::getSingletonPtr()->m_pTrayMgr->isDialogVisible()){
+        if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_Z)) {
+            if (m_pCameraAngle==2*Ogre::Math::PI) m_pCameraAngle = 0;
+            m_pCameraAngle+=mOrbitIncrementRadians;
+            m_pCamera->setPosition(Ogre::Vector3(mOrbitRadius*Ogre::Math::Cos(m_pCameraAngle),200,mOrbitRadius*Ogre::Math::Sin(m_pCameraAngle)));
+            m_pCamera->yaw(Ogre::Radian(-mOrbitIncrementRadians));
+        } else if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_X)) {		
+            if (m_pCameraAngle==0) m_pCameraAngle = 2*Ogre::Math::PI;
+            m_pCameraAngle-=mOrbitIncrementRadians;
+            m_pCamera->setPosition(Ogre::Vector3(mOrbitRadius*Ogre::Math::Cos(m_pCameraAngle),200,mOrbitRadius*Ogre::Math::Sin(m_pCameraAngle)));
+            m_pCamera->yaw(Ogre::Radian(mOrbitIncrementRadians));
+        }
+
+        if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_UP)) {
+            mMech->accelerate();
+        } else if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_DOWN)) {
+            mMech->decelerate();
+        }
+
+        if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RIGHT)) {
+            mMech->turnRight();
+        } else if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LEFT))	{
+            mMech->turnLeft();
+        }
+
+        if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)) {
+            mMech->fireLaser(mOpponent);
+        }
     }
 }
 
@@ -330,19 +419,26 @@ void GameState::update(double timeSinceLastFrame)
     m_RotScale  = m_RotateSpeed * timeSinceLastFrame;
 
     m_TranslateVector = Vector3::ZERO;
-
     getInput();
     moveCamera();
-    SCheckCollisionAnswer ret = m_Collision->check_ray_collision(m_pCamera->getCameraToViewportRay(0,1));
-    // check if we found collision:
-    if (ret.collided) 
-    {
-        LogManager::getSingleton().logMessage("---- VA CHAM ----");
+    if (!mMech->isActive()) {
+        showResult("You Lose!");
+    } else if (!mOpponent->isActive()) {
+        showResult("You Win!");
     }
-    else
-    {
-        LogManager::getSingleton().logMessage("---- KHONG VA CHAM ----");
-    }
+    mMech->move(timeSinceLastFrame);
+    //mOpponent->move(timeSinceLastFrame, mMech);
+    //mSpeedPanel->setParamValue(0, "111");
+    //SCheckCollisionAnswer ret = m_Collision->check_ray_collision(m_pCamera->getCameraToViewportRay(0.5, 0.5));
+    //// check if we found collision:
+    //if (ret.collided) 
+    //{
+    //    LogManager::getSingleton().logMessage("---- VA CHAM ----");
+    //}
+    //else
+    //{
+    //    LogManager::getSingleton().logMessage("---- KHONG VA CHAM ----");
+    //}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

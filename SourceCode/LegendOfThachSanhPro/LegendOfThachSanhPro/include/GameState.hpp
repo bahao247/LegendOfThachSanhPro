@@ -12,6 +12,10 @@
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
 #include "CollisionTools.h"
+#include "Mech.h"
+#include "OpponentMech.h"
+#include <stdio.h>
+#include <math.h>
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -51,6 +55,8 @@ public:
     void itemSelected(OgreBites::SelectMenu* menu);
 
 	void update(double timeSinceLastFrame);
+    void addSpotlight(const Ogre::String name, const Ogre::Real xPos, const Ogre::Real zPos);
+    void showResult(Ogre::String result);
 
 private:
 	Ogre::SceneNode*			m_pOgreHeadNode;
@@ -73,6 +79,16 @@ private:
 	bool						m_bLMouseDown, m_bRMouseDown;
 	bool						m_bSettingsMode;
     Collision::CollisionTools*  m_Collision;
+
+    Ogre::Real mOrbitRadius;
+    Ogre::Real mOrbitIncrementRadians;
+    Ogre::Real m_pCameraAngle;
+    Ogre::Real mPlaneSize;
+    Mech* mMech;
+    OpponentMech* mOpponent;
+    Ogre::SceneNode* mSculptureNode;
+    OgreBites::ParamsPanel* mSpeedPanel;
+    OgreBites::ParamsPanel* mResultPanel;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

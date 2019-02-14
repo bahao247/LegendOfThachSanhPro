@@ -128,9 +128,13 @@
     <ClInclude Include="include\DemoApp.hpp" />
     <ClInclude Include="include\DotSceneLoader.hpp" />
     <ClInclude Include="include\GameState.hpp" />
+    <ClInclude Include="include\Mech.h" />
     <ClInclude Include="include\MenuState.hpp" />
+    <ClInclude Include="include\OpponentMech.h" />
     <ClInclude Include="include\PauseState.hpp" />
     <ClInclude Include="include\rapidxml.hpp" />
+    <ClInclude Include="include\SinbadCharacterController.h" />
+    <ClInclude Include="include\SinbadState.h" />
     <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="res\Resource.h" />
     <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h" />
@@ -143,8 +147,12 @@
     <ClCompile Include="src\DotSceneLoader.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mech.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
+    <ClCompile Include="src\OpponentMech.cpp" />
     <ClCompile Include="src\PauseState.cpp" />
+    <ClCompile Include="src\SinbadCharacterController.cpp" />
+    <ClCompile Include="src\SinbadState.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

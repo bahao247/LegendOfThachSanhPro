@@ -124,7 +124,7 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
     m_pRenderWnd->setActive(true);
 	mpSound = new SoundManager();
 	mpSound->initSound();
-	mpSound->playSound("../../media/sound/XinChaoVietNam_Jmi.flac", Vector3(0,0,0), true);
+	//mpSound->playSound("../../media/sound/XinChaoVietNam_Jmi.flac", Vector3(0,0,0), true);
 
     return true;
 }

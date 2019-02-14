@@ -62,6 +62,18 @@
     <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\OpponentMech.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mech.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SinbadCharacterController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SinbadState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AdvancedOgreFramework.cpp">
@@ -92,6 +104,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mech.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpponentMech.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SinbadCharacterController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SinbadState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
