@@ -68,10 +68,13 @@
     <ClInclude Include="include\Mech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SinbadCharacterController.h">
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SinbadState.h">
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -112,10 +115,13 @@
     <ClCompile Include="src\OpponentMech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SinbadCharacterController.cpp">
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SinbadState.cpp">
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

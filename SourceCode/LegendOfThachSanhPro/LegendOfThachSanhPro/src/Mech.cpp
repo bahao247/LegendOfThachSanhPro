@@ -12,8 +12,8 @@ Mech::Mech(Ogre::String name, Ogre::SceneManager* sceneMgr, Ogre::Real worldSize
 	mSceneMgr(sceneMgr),
 	mLaserSeconds(0.05f),
 	mCurrentLaserSeconds(0.0f),
-	mLaserLength(50.0f),
-	mSpeedChange(0.00001f)
+	mLaserLength(500.0f),
+	mSpeedChange(0.0025f)
 {
 	mEntity = mSceneMgr->createEntity(name, "Mech.mesh");
 	Ogre::AxisAlignedBox box = mEntity->getBoundingBox();
@@ -48,6 +48,11 @@ Ogre::Real Mech::getSpeed(void)
 	return mSpeed;
 }
 
+void Mech::setSpeed(Ogre::Real speed) 
+{
+	mSpeed = speed;
+}
+
 const Ogre::Vector3 & Mech::getPosition(void) 
 {
 	return mMechNode->getPosition();
@@ -60,7 +65,7 @@ Ogre::Vector3 Mech::getDirection(void)
 
 void Mech::accelerate(void)
 {
-	if (mSpeed<10 && mActive) mSpeed+=mSpeedChange;
+	if (mSpeed<0.01 && mActive) mSpeed+=mSpeedChange;
 }
 
 void Mech::decelerate(void)

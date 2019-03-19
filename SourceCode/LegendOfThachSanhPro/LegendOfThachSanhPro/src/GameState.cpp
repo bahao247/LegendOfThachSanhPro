@@ -371,6 +371,10 @@ void GameState::getInput()
         } else if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_DOWN)) {
             mMech->decelerate();
         }
+		else
+		{
+			mMech->setSpeed(0);
+		}
 
         if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RIGHT)) {
             mMech->turnRight();

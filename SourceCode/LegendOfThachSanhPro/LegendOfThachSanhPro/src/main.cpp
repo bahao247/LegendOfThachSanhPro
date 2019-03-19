@@ -1,6 +1,33 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "DemoApp.hpp"
+#ifdef WIN32
+#include "WindowsIncludes.h"
+#else
+#define HWND void*
+#endif
+
+// RakNet includes
+#include "GetTime.h"
+#include "RakSleep.h"
+#include "RakAssert.h"
+#include "StringTable.h"
+#include "RakPeerInterface.h"
+
+#include "BitStream.h"
+#include "MessageIdentifiers.h"
+#include "ReplicaManager3.h"
+#include "NetworkIDManager.h"
+#include "RakSleep.h"
+#include "FormatString.h"
+#include "StringCompressor.h"
+#include "Rand.h"
+#include "TransformationHistory.h"
+
+using namespace Ogre;
+using namespace DataStructures;
+using namespace OIS;
+using namespace RakNet;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

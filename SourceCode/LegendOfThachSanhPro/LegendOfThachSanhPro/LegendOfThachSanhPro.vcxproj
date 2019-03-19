@@ -38,7 +38,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>obj\$(Configuration)\</IntDir>
-    <OutDir>sdk\bin\$(Configuration)\</OutDir>
+    <OutDir>$(out_directory)</OutDir>
     <LinkIncremental>true</LinkIncremental>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
@@ -62,20 +62,20 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>sdk\dependencies\moc-2.0.0;sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>sdk\dependencies\rakNet-3.0.0\Source;sdk\dependencies\moc-2.0.0;sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)/LegendOfThachSanhPro.pdb</ProgramDatabaseFile>
-      <OutputFile>sdk\bin\$(Configuration)\$(ProjectName).exe</OutputFile>
+      <OutputFile>$(out_directory)\$(ProjectName).exe</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>sdk\lib\debug;sdk\boost\lib;sdk\dependencies\irrKlang-1.5.0\lib\Win32-visualStudio;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>sdk\lib\debug;sdk\boost\lib;sdk\dependencies\irrKlang-1.5.0\lib\Win32-visualStudio;sdk\dependencies\rakNet-3.0.0\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;irrKlang.lib;WS2_32.lib;RakNet_VS2008_DLL_Debug_Win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
-      <Command>copy "$(OutDir)\$(TargetFileName)" "sdk\bin\$(Configuration)"</Command>
+      <Command>copy "$(OutDir)\$(TargetFileName)" "$(out_directory)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,14 +133,18 @@
     <ClInclude Include="include\OpponentMech.h" />
     <ClInclude Include="include\PauseState.hpp" />
     <ClInclude Include="include\rapidxml.hpp" />
-    <ClInclude Include="include\SinbadCharacterController.h" />
-    <ClInclude Include="include\SinbadState.h" />
     <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="res\Resource.h" />
     <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.cpp" />
     <ClCompile Include="src\AdvancedOgreFramework.cpp" />
     <ClCompile Include="src\AppStateManager.cpp" />
     <ClCompile Include="src\DemoApp.cpp" />
@@ -151,8 +155,6 @@
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\OpponentMech.cpp" />
     <ClCompile Include="src\PauseState.cpp" />
-    <ClCompile Include="src\SinbadCharacterController.cpp" />
-    <ClCompile Include="src\SinbadState.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

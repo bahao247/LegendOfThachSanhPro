@@ -12,6 +12,7 @@ public:
 	const Ogre::Vector3 & getPosition(void);
 	Ogre::Vector3 getDirection(void);
 	Ogre::Real getSpeed(void);
+	void setSpeed(Ogre::Real speed);
 	void accelerate(void);
 	void decelerate(void);
 	void turnLeft(void);
