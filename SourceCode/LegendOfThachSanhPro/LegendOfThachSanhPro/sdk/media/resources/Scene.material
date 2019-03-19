@@ -1,0 +1,77 @@
+material Material
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.189712 0.368351 0.159939 1.000000
+			specular 0.154000 0.196000 0.144000 1.000000 0.250000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+
+material OpponentMaterial
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.189712 0.159939 0.368351 1.000000
+			specular 0.154000 0.144000 0.196000 1.000000 0.250000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+
+material LaserMaterial
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			ambient 1.000000 0.000000 0.000000 1.000000
+			diffuse 1.000000 0.000000 0.000000 1.000000
+			specular 1.000000 0.000000 0.000000 1.000000 1.000000
+			emissive 1.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+
+
+material Examples/BumpyMetal
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+
+			texture_unit
+			{
+				texture BumpyMetal.jpg
+			}
+		}
+	}
+}
+
+material Concrete.001
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.895500 0.825300 0.558900 1.000000
+			specular 0.100000 0.100000 0.100000 1.000000 5.000000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+
