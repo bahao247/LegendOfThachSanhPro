@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA98E1BC-2724-4BBA-8A2C-D8E27313638B}</ProjectGuid>
+    <RootNamespace>Ogre3DInterpDemo</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>sdk\dependencies\rakNet-3.0.0\Source;sdk\dependencies\moc-2.0.0;sdk\dependencies\irrKlang-1.5.0\include;include;sdk\include;sdk\include\OGRE\Overlay;sdk\include\OIS;sdk\include\OGRE;sdk\Samples\Common\include;sdk\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;irrKlang.lib;WS2_32.lib;RakNet_VS2008_DLL_Debug_Win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(out_directory_2)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>sdk\lib\debug;sdk\boost\lib;sdk\dependencies\irrKlang-1.5.0\lib\Win32-visualStudio;sdk\dependencies\rakNet-3.0.0\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OGRE_HOME)\bin\debug\*.dll $(ProjectDir)
+copy .\..\..\Lib\RakNet_VS2008_DLL_Debug_Win32.dll  $(ProjectDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>./;./../../Source;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\boost_1_48\;$(OGRE_HOME)\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>./../../lib/RakNetDLL.lib;ws2_32.lib;OgreMain.lib;OIS.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(ProjectDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_48\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OGRE_HOME)\bin\release\*.dll  $(ProjectDir)
+copy .\..\..\Lib\RakNet.dll  $(ProjectDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.cpp" />
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.cpp" />
+    <ClCompile Include="src\App3D.cpp" />
+    <ClCompile Include="src\AppInterface.cpp" />
+    <ClCompile Include="src\FSM.cpp" />
+    <ClCompile Include="src\Mech.cpp" />
+    <ClCompile Include="src\OpponentMech.cpp" />
+    <ClCompile Include="src\OverlayHelper.cpp" />
+    <ClCompile Include="src\RunnableState.cpp" />
+    <ClCompile Include="src\SoundManager.cpp" />
+    <ClCompile Include="src\State.cpp" />
+    <ClCompile Include="src\TransformationHistory.cpp" />
+    <ClCompile Include="src\WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\App3D.h" />
+    <ClInclude Include="include\AppInterface.h" />
+    <ClInclude Include="include\AppTypes.h" />
+    <ClInclude Include="include\FSM.h" />
+    <ClInclude Include="include\Mech.h" />
+    <ClInclude Include="include\OpponentMech.h" />
+    <ClInclude Include="include\OverlayHelper.h" />
+    <ClInclude Include="include\rapidxml.hpp" />
+    <ClInclude Include="include\RunnableState.h" />
+    <ClInclude Include="include\SoundManager.h" />
+    <ClInclude Include="include\State.h" />
+    <ClInclude Include="include\TransformationHistory.h" />
+    <ClInclude Include="res\Resource.h" />
+    <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.h" />
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\LegendOfThachSanhPro.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\LegendOfThachSanhPro.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

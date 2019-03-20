@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="App3D">
+      <UniqueIdentifier>{cd4b50f6-9554-495f-a6c8-6769caac818e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RakNet">
+      <UniqueIdentifier>{9b60d5ff-774e-4eb2-a328-75518c4cfaa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{768ef36f-7a68-4641-b89c-7bc485d4ff3c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OpponentMech.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoundManager.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App3D.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AppInterface.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FSM.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OverlayHelper.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RunnableState.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TransformationHistory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mech.cpp">
+      <Filter>App3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp">
+      <Filter>RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.cpp">
+      <Filter>RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.cpp">
+      <Filter>RakNet</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OpponentMech.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoundManager.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\App3D.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AppInterface.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AppTypes.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FSM.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OverlayHelper.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RunnableState.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\State.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TransformationHistory.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidxml.hpp">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mech.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="res\Resource.h">
+      <Filter>App3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.h">
+      <Filter>RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.h">
+      <Filter>RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.h">
+      <Filter>RakNet</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\LegendOfThachSanhPro.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\LegendOfThachSanhPro.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -130,18 +130,14 @@
     <ClInclude Include="include\GameState.hpp" />
     <ClInclude Include="include\Mech.h" />
     <ClInclude Include="include\MenuState.hpp" />
-    <ClInclude Include="include\OpponentMech.h" />
     <ClInclude Include="include\PauseState.hpp" />
     <ClInclude Include="include\rapidxml.hpp" />
-    <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="res\Resource.h" />
-    <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h" />
     <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.h" />
     <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.h" />
     <ClInclude Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp" />
     <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp" />
     <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\RakSleep.cpp" />
     <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\Rand.cpp" />
@@ -153,9 +149,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Mech.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
-    <ClCompile Include="src\OpponentMech.cpp" />
     <ClCompile Include="src\PauseState.cpp" />
-    <ClCompile Include="src\SoundManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

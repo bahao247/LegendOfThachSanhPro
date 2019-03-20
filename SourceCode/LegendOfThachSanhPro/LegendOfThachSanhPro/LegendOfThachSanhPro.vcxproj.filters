@@ -56,15 +56,6 @@
     <ClInclude Include="include\rapidxml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SoundManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\dependencies\moc-2.0.0\CollisionTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\OpponentMech.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Mech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -103,16 +94,7 @@
     <ClCompile Include="src\PauseState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SoundManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\dependencies\moc-2.0.0\CollisionTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Mech.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OpponentMech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sdk\Dependencies\rakNet-3.0.0\Source\FormatString.cpp">
