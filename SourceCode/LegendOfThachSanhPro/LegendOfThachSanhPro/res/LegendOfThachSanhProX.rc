@@ -28,7 +28,7 @@ LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_APPICON               ICON                    "LegendOfThachSanhPro.ico"
+IDI_APPICON               ICON                    "LegendOfThachSanhProX.ico"
 #endif    // Danish resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +78,7 @@ BEGIN
     IDS_APP_TITLE           "LegendOfThachSanhPro"
 END
 
-IDI_APPICON             ICON                    "LegendOfThachSanhPro.ico"
+IDI_APPICON             ICON                    "LegendOfThachSanhProX.ico"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

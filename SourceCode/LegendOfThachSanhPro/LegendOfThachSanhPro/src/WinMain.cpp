@@ -29,6 +29,10 @@
 //#include "OverlayHelper.h"
 #include "App3D.h"
 #include "../res/Resource.h"
+#include "Mech.h"
+#include "OpponentMech.h"
+#include <stdio.h>
+#include <math.h>
 
 // RakNet includes
 #include "GetTime.h"
@@ -329,7 +333,10 @@ PopcornDemoRM3 replicaManager3;
 class ExampleApp : public App3D
 {
 public:
-	ExampleApp()
+	ExampleApp() : m_pCameraAngle(0.0f),
+		mOrbitRadius(150.0f),
+		mOrbitIncrementRadians(Ogre::Math::PI/250),
+		mPlaneSize(200)
 	{
 		quit=false;
 	}
@@ -337,6 +344,30 @@ public:
 	~ExampleApp()
 	{
 	}
+
+	void addSpotlight(const Ogre::String name, const Ogre::Real xPos, const Ogre::Real zPos) 
+	{
+		Ogre::Light* spotLight = sceneManager->createLight(name);
+		spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
+		spotLight->setDiffuseColour(1.0, 1.0, 1.0);
+		spotLight->setSpecularColour(1.0, 1.0, 1.0);
+		spotLight->setDirection(0, -1, 0);
+		spotLight->setPosition(xPos, 250.0, zPos);
+		spotLight->setAttenuation(500.0f, 0.5f, 0.007f, 0.0f);
+		spotLight->setSpotlightRange(Ogre::Degree(180), Ogre::Degree(180));
+	}
+
+// 	void GameState::showResult(Ogre::String result)
+// 	{
+// 		if (OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget("result")==0) {
+// 			Ogre::StringVector items2;
+// 			items2.push_back("Result");
+// 			mResultPanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_NONE, "result", 200, items2);
+// 			OgreFramework::getSingletonPtr()->m_pTrayMgr->moveWidgetToTray(mResultPanel, OgreBites::TL_CENTER, 0);
+// 			mResultPanel->setParamValue(0, result);
+// 			mResultPanel->show();
+// 		}
+// 	}
 
 	void OnAppShutdown( void )
 	{
@@ -411,6 +442,22 @@ public:
 			enableInterpolation=false;
 		else
 			enableInterpolation=true;
+
+		if (mKeyboard->isKeyDown(OIS::KC_NUMPAD8)) {
+			mMech->accelerate();
+		} else if (mKeyboard->isKeyDown(OIS::KC_NUMPAD2)) {
+			mMech->decelerate();
+		}
+
+		if (mKeyboard->isKeyDown(OIS::KC_NUMPAD6)) {
+			mMech->turnRight();
+		} else if (mKeyboard->isKeyDown(OIS::KC_NUMPAD4))	{
+			mMech->turnLeft();
+		}
+
+		if (mKeyboard->isKeyDown(OIS::KC_SPACE)) {
+			mMech->fireLaser(mOpponent);
+		}
 
 		static bool didUpdateDelayLastTick=false;
 		bool didUpdateDelayThisTick=false;
@@ -515,6 +562,7 @@ public:
 		}
 		
 		camera->moveRelative(mTranslateVector);
+		mMech->move(elapsedTimeMS);
 
 		if( mKeyboard->isKeyDown(KC_ESCAPE) || mKeyboard->isKeyDown(KC_Q) )
 			quit=true;
@@ -551,7 +599,8 @@ public:
 		// Start the overlay helper class, which handles fading of overlays and other stuff
 		//overlayHelper.Startup();
 
-		sceneManager->setAmbientLight( ColourValue( .5, .5, .5 ) );
+		//sceneManager->setAmbientLight( ColourValue( .5, .5, .5 ) );
+		sceneManager->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
 		mainLight = sceneManager->createLight("MainLight");
 		mainLightNode = sceneManager->getRootSceneNode()->createChildSceneNode( "MainLightNode" );
@@ -559,9 +608,46 @@ public:
 		mainLight->setType(Light::LT_POINT);
 		mainLight->setPosition(200.0f, 200.0f, 200.0f);
 		
-		camera->setPosition(150.0f, 150.0f, 70.0f);
-		camera->lookAt(0.0f,50.0f,0.0f);
-		camera->setNearClipDistance(1.0f);
+// 		camera->setPosition(150.0f, 150.0f, 70.0f);
+// 		camera->lookAt(0.0f,50.0f,0.0f);
+// 		camera->setNearClipDistance(1.0f);
+		camera->setPosition(5.0f, 60.0f, 60.0f);
+		camera->lookAt(5.0f, 20.0f, 0.0f);
+		camera->setPosition(Ogre::Vector3(mOrbitRadius*Ogre::Math::Cos(m_pCameraAngle),200,mOrbitRadius*Ogre::Math::Sin(m_pCameraAngle)));
+		camera->lookAt(0.0f, 0.0f, 0.0f);
+
+		Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(Ogre::TFO_ANISOTROPIC);
+		Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(16);
+
+		mMech = new Mech("Mech", sceneManager, mPlaneSize);
+		mOpponent = new OpponentMech("OpponentMech", sceneManager, mPlaneSize);
+
+		Ogre::Entity* sculptureEntity = sceneManager->createEntity("Sculpture", "Sculpture.mesh");	
+		Ogre::AxisAlignedBox sculptureBox = sculptureEntity->getBoundingBox();
+		mSculptureNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+		mSculptureNode->attachObject(sculptureEntity);
+		mSculptureNode->setScale(4.0f, 17.0f, 4.0f);
+		mSculptureNode->setPosition(0, -sculptureBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*17.0f, 0);
+		sculptureEntity->setCastShadows(true);
+
+		// Set ambient light
+		sceneManager->setAmbientLight(Ogre::ColourValue(0.0, 0.0, 0.0));
+		sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+		addSpotlight("spotLight1", 250.0, 0);
+		addSpotlight("spotLight2", 0, -250.0);
+		addSpotlight("spotLight3", 0, 250.0);
+		addSpotlight("spotLight4", -250.0, 0);
+
+		Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+
+		Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			plane, mPlaneSize, mPlaneSize, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+
+		Ogre::Entity* entGround = sceneManager->createEntity("GroundEntity", "ground");
+		sceneManager->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+
+		entGround->setMaterialName("Examples/BumpyMetal");
+		entGround->setCastShadows(false);
 
 		popcornKernel = sceneManager->createEntity("PopcornKernel", "PopcornKernel.mesh");
 		popcornPopped = sceneManager->createEntity("PopcornPopped", "PopcornPopped.mesh");
@@ -574,7 +660,7 @@ public:
 
 		// Bug: Since updating to ogre OgreSDK_vc8_v1-7-1 from Ogre 3D 1.6.2, the first call to ShowMessage doesn't show up anymore
 		ShowMessage("'S'erver. 'C'lient. Hold ' ' to disable interp.");
-		ShowMessage("'S'erver. 'C'lient. Hold ' ' to disable interp.");
+		//ShowMessage("'S'erver. 'C'lient. Hold ' ' to disable interp.");
 	}
 
 	virtual void CreateKernels(ReplicaManager3 *replicaManager3)
@@ -633,6 +719,15 @@ protected:
 	NetworkIDManager networkIdManager;
 	bool isStarted;
 	RakNet::TimeMS popcornLifetimeCountdown;
+	Ogre::Real mOrbitRadius;
+	Ogre::Real mOrbitIncrementRadians;
+	Ogre::Real m_pCameraAngle;
+	Ogre::Real mPlaneSize;
+	Mech* mMech;
+	OpponentMech* mOpponent;
+	Ogre::SceneNode* mSculptureNode;
+	//OgreBites::ParamsPanel* mSpeedPanel;
+	//OgreBites::ParamsPanel* mResultPanel;
 };
 
 
