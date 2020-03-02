@@ -13,7 +13,8 @@ Mech::Mech(Ogre::String name, Ogre::SceneManager* sceneMgr, Ogre::Real worldSize
 	mLaserSeconds(0.05f),
 	mCurrentLaserSeconds(0.0f),
 	mLaserLength(500.0f),
-	mSpeedChange(0.0025f)
+	mSpeedChange(0.0025f),
+	mClient(false)
 {
 	mEntity = mSceneMgr->createEntity(name, "Mech.mesh");
 	Ogre::AxisAlignedBox box = mEntity->getBoundingBox();
@@ -56,6 +57,17 @@ void Mech::setSpeed(Ogre::Real speed)
 const Ogre::Vector3 & Mech::getPosition(void) 
 {
 	return mMechNode->getPosition();
+}
+
+void Mech::setDirection(Ogre::Vector3 mechDirection)
+{
+	Ogre::Radian degree = Ogre::Math::ACos(mechDirection.x) * (180/Ogre::Math::PI);
+	mMechDirection = degree.valueRadians();
+	mClient = true;
+}
+void Mech::setPostion(Ogre::Vector3 mechPostion)
+{
+	mMechNode->setPosition(mechPostion);
 }
 
 Ogre::Vector3 Mech::getDirection(void) 
@@ -201,8 +213,19 @@ void Mech::checkBounds(const Ogre::Vector3& position)
 	if (changed) {
 		mMechNode->setPosition(newPosition);
 		mAnimationState->setEnabled(false);
+// 		if (!mClient)
+// 		{
+// 			mMechNode->yaw(Ogre::Radian(Ogre::Math::PI));
+// 			mMechDirection = fmod(mMechDirection+Ogre::Math::PI, 2*Ogre::Math::PI);
+// 		}
+		mSpeed = 0;
+	}
+}
+
+void Mech::turnBack()
+{
+	if (mActive) {
 		mMechNode->yaw(Ogre::Radian(Ogre::Math::PI));
 		mMechDirection = fmod(mMechDirection+Ogre::Math::PI, 2*Ogre::Math::PI);
-		mSpeed = 0;
 	}
 }

@@ -65,8 +65,8 @@ static const unsigned short SERVER_PORT=12345;
 static const int DEFAULT_SERVER_MILLISECONDS_BETWEEN_UPDATES=250;
 
 // Demo variables
-static const int MIN_KERNELS=100;
-static const int KERNELS_VARIANCE=60;
+static const int MIN_KERNELS=10;
+static const int KERNELS_VARIANCE=10;
 static const RakNet::TimeMS POP_COUNTDOWN_MIN_DELAY_MS=1000;
 static const RakNet::TimeMS POP_COUNTDOWN_VARIANCE_MS=5000;
 static const RakNet::TimeMS RESTART_TIMER_MS=14000;
@@ -76,11 +76,13 @@ static const float UPWARD_VELOCITY_MINIMUM=35.0f;
 static const float UPWARD_VELOCITY_VARIANCE=25.0f;
 static const float DOWNWARD_ACCELERATION = -15.0f;
 
-bool isServer;
+bool isServer, isMechActive = false, isOpponentMechActive = false;
 Ogre::Entity *popcornKernel, *popcornPopped;
 RakNet::RakPeerInterface *rakPeer;
 DataStructures::List<Popcorn*> popcornList;
 bool enableInterpolation;
+Mech* mMech;
+OpponentMech* mOpponent;
 
 App3D *app;
 
@@ -164,6 +166,14 @@ public:
 		// Autoserialize causes a network packet to go out when any of these member variables change.
 		RakAssert(isServer==true);
 		serializeParameters->outputBitstream[0].Write(isKernel);
+		serializeParameters->outputBitstream[0].Write(mOpponent->isActive());
+		serializeParameters->outputBitstream[0].Write(mOpponent->getSpeed());
+		serializeParameters->outputBitstream[0].Write(mOpponent->getDirection());
+		serializeParameters->outputBitstream[0].Write(mOpponent->getPosition());
+		serializeParameters->outputBitstream[0].Write(mMech->isActive());
+		serializeParameters->outputBitstream[0].Write(mMech->getSpeed());
+		serializeParameters->outputBitstream[0].Write(mMech->getDirection());
+		serializeParameters->outputBitstream[0].Write(mMech->getPosition());
 		serializeParameters->outputBitstream[0].WriteAlignedBytes((const unsigned char*)&position,sizeof(position));
 		serializeParameters->outputBitstream[0].WriteAlignedBytes((const unsigned char*)&velocity,sizeof(velocity));
 		serializeParameters->outputBitstream[0].WriteAlignedBytes((const unsigned char*)&orientation,sizeof(orientation));
@@ -172,10 +182,47 @@ public:
 	virtual void Deserialize(RakNet::DeserializeParameters *deserializeParameters)
 	{
 		bool lastIsKernel = isKernel;
-
+		bool isActive = false;
+		Ogre::Real mechSpeed = 0;
+		Ogre::Vector3 mechDirection = Ogre::Vector3(0, 0, 0);
+		Ogre::Vector3 mechPosition = Ogre::Vector3(0, 0, 0);
 		// Doing this because we are also lagging position and orientation behind by DEFAULT_SERVER_MILLISECONDS_BETWEEN_UPDATES
 		// Without it, the kernel would pop immediately but would not start moving
 		deserializeParameters->serializationBitstream[0].Read(isKernel);
+		deserializeParameters->serializationBitstream[0].Read(isActive);
+		if (!isActive)mOpponent->mechDead();
+		deserializeParameters->serializationBitstream[0].Read(mechSpeed);
+		deserializeParameters->serializationBitstream[0].Read(mechDirection);
+		deserializeParameters->serializationBitstream[0].Read(mechPosition);
+		if (mechPosition.x > 100 || mechPosition.x < -100 || mechPosition.z > 100 || mechPosition.z < -100)
+		{
+			isOpponentMechActive = false;
+		}
+		if (mOpponent->isActive())
+		{
+			mOpponent->setSpeed(mechSpeed);
+			mOpponent->setDirection(mechDirection);
+			if (isOpponentMechActive == false)
+			{
+				mOpponent->setPostion(mechPosition);
+				isOpponentMechActive = true;
+			}
+		}
+		deserializeParameters->serializationBitstream[0].Read(isActive);
+		if (!isActive)mMech->mechDead();
+		deserializeParameters->serializationBitstream[0].Read(mechSpeed);
+		deserializeParameters->serializationBitstream[0].Read(mechDirection);
+		deserializeParameters->serializationBitstream[0].Read(mechPosition);
+		if (mMech->isActive())
+		{
+			mMech->setSpeed(mechSpeed);
+			mMech->setDirection(mechDirection);
+			if (isMechActive == false)
+			{
+				mMech->setPostion(mechPosition);
+				isMechActive = true;
+			}
+		}
 		if (isKernel==false && lastIsKernel==true)
 		popCountdown=DEFAULT_SERVER_MILLISECONDS_BETWEEN_UPDATES;
 
@@ -285,15 +332,15 @@ public:
 		// Only server sets up initial positions, etc.
 		if (isServer)
 		{
-			p->position.x=-POSITION_VARIANCE/2.0f+frandomMT()*POSITION_VARIANCE;
-			p->position.y=0.0f;
-			p->position.z=-POSITION_VARIANCE/2.0f+frandomMT()*POSITION_VARIANCE;
-			p->velocity=Ogre::Vector3::ZERO;
-			p->popCountdown=POP_COUNTDOWN_MIN_DELAY_MS + randomMT() % POP_COUNTDOWN_VARIANCE_MS;
-			p->orientation.FromAngleAxis(Ogre::Radian(frandomMT()*6.28f), Ogre::Vector3(-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f).normalisedCopy());
-			p->rotationalVelocity.FromAngleAxis(Ogre::Radian(frandomMT()*6.28f), Ogre::Vector3(-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f).normalisedCopy());
-			p->visiblePosition=p->position;
-			p->visibleOrientation=p->orientation;
+// 			p->position.x=-POSITION_VARIANCE/2.0f+frandomMT()*POSITION_VARIANCE;
+// 			p->position.y=0.0f;
+// 			p->position.z=-POSITION_VARIANCE/2.0f+frandomMT()*POSITION_VARIANCE;
+// 			p->velocity=Ogre::Vector3::ZERO;
+// 			p->popCountdown=POP_COUNTDOWN_MIN_DELAY_MS + randomMT() % POP_COUNTDOWN_VARIANCE_MS;
+// 			p->orientation.FromAngleAxis(Ogre::Radian(frandomMT()*6.28f), Ogre::Vector3(-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f).normalisedCopy());
+// 			p->rotationalVelocity.FromAngleAxis(Ogre::Radian(frandomMT()*6.28f), Ogre::Vector3(-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f,-1.0f+frandomMT()*2.0f).normalisedCopy());
+// 			p->visiblePosition=p->position;
+// 			p->visibleOrientation=p->orientation;
 		}
 		else
 			p->sceneNode->setVisible(false,true);
@@ -444,19 +491,27 @@ public:
 			enableInterpolation=true;
 
 		if (mKeyboard->isKeyDown(OIS::KC_NUMPAD8)) {
-			mMech->accelerate();
+			if(isServer)mMech->accelerate();
+			else mOpponent->accelerate();
 		} else if (mKeyboard->isKeyDown(OIS::KC_NUMPAD2)) {
-			mMech->decelerate();
+			if(isServer)mMech->decelerate();
+			else mOpponent->decelerate();
 		}
 
 		if (mKeyboard->isKeyDown(OIS::KC_NUMPAD6)) {
-			mMech->turnRight();
+			if(isServer)mMech->turnRight();
+			else mOpponent->turnRight();
 		} else if (mKeyboard->isKeyDown(OIS::KC_NUMPAD4))	{
-			mMech->turnLeft();
+			if(isServer)mMech->turnLeft();
+			else mOpponent->turnLeft();
+		} else if (mKeyboard->isKeyDown(OIS::KC_NUMPAD2))	{
+			if(isServer)mMech->turnBack();
+			else mOpponent->turnBack();
 		}
 
-		if (mKeyboard->isKeyDown(OIS::KC_SPACE)) {
-			mMech->fireLaser(mOpponent);
+		if (mKeyboard->isKeyDown(OIS::KC_NUMPAD5)) {
+			if(isServer)mMech->fireLaser(mOpponent);
+			else mOpponent->fireLaser(mMech);
 		}
 
 		static bool didUpdateDelayLastTick=false;
@@ -681,10 +736,10 @@ protected:
 	void ShowMessage(const char *msg, float timescale=1.0f)
 	{
 		// Create a panel
-		static int count=0;
-		MessageBox(NULL, msg,
-			"Ogre3DInterpDemo",
-			MB_ICONWARNING);
+// 		static int count=0;
+// 		MessageBox(NULL, msg,
+// 			"Ogre3DInterpDemo",
+// 			MB_ICONWARNING);
 // 		OverlayContainer* panel =overlayHelper.CreatePanel(FormatString("%i",count++));
 // 		panel->setMetricsMode(Ogre::GMM_PIXELS);
 // 		panel->setPosition(10, 10);
@@ -723,8 +778,8 @@ protected:
 	Ogre::Real mOrbitIncrementRadians;
 	Ogre::Real m_pCameraAngle;
 	Ogre::Real mPlaneSize;
-	Mech* mMech;
-	OpponentMech* mOpponent;
+	//Mech* mMech;
+	//OpponentMech* mOpponent;
 	Ogre::SceneNode* mSculptureNode;
 	//OgreBites::ParamsPanel* mSpeedPanel;
 	//OgreBites::ParamsPanel* mResultPanel;

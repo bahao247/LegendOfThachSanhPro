@@ -22,11 +22,14 @@ public:
 	virtual void fireLaser(Mech* opponent);
 	void mechDead(void);
 	bool isActive(void);
+	void setDirection(Ogre::Vector3 mechDirection);
+	void setPostion(Ogre::Vector3 mechPostion);
+	void turnBack(void);
 
 protected:
 
 	Ogre::String mName;
-	bool mActive;
+	bool mActive, mClient;
 	Ogre::Real mWorldSize;
 	Ogre::Real mTurnIncrementRadians;
 	Ogre::Real mMechDirection;  

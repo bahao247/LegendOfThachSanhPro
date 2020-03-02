@@ -16,21 +16,6 @@ OpponentMech::~OpponentMech(void)
 {
 }
 
-void OpponentMech::move(double time, Mech* player)
-{
-	if (mActive) {
-		mTimeToTurnSeconds+=time;
-		if (mTimeToTurnSeconds>mTurnTimeSeconds) {
-			mTimeToTurnSeconds=0.0f;
-			turnRight();
-		}
-		if (laserHits(player)) {
-			fireLaser(player);
-		}
-	}
-	Mech::move(time);
-}
-
 int OpponentMech::detectDirection(Mech* player) 
 {
 	Ogre::Vector3 detectDirection = player->getPosition() - mMechNode->getPosition();

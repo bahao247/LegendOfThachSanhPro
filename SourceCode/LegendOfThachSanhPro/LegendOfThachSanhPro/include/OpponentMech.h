@@ -10,8 +10,6 @@ public:
     OpponentMech(Ogre::String name, Ogre::SceneManager* sceneMgr, Ogre::Real worldSize);
     virtual ~OpponentMech(void);
 
-	virtual void move(double time, Mech* player);
-
 protected:
 
 	double mTurnTimeSeconds;
